@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Realtime Guestbook</title>
+</head>
+<body>
+<h3>Messages:</h3>
+<ol id="messages"></ol>
+</div>
+
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="sockjs.min.js"></script>
+<script type="text/javascript" src="stomp.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var messageList = $("#messages");
+
+        var getMessageString = function (message) {
+            return "<li><p>Received: " + message.senderAddress + "</p><div>" + message.subject + "</div><div>" + message.content + "</div></li>";
+        };
+
+        var socket = new SockJS('/maildump');
+        var stompClient = Stomp.over(socket);
+        stompClient.connect({}, function () {
+            // subscribe to the /topic/entries endpoint which feeds newly added messages
+            stompClient.subscribe('/email', function (data) {
+                // when a message is received add it to the end of the list
+                var body = JSON.parse(data.body);
+                for (var i = 0; i < body.length; i++) {
+                    messageList.append(getMessageString(body[i]));
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
