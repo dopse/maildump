@@ -1,5 +1,9 @@
 # maildump
 
+## Purpose
+
+MailDump is a simply spring boot application whose goal is to simulate a SMTP server. You can see instantly the new emails in a web interface thanks to WebSocket.
+
 ## Usage
 
 - First step, you have to generate the Dockerfile and install it in your Docker instance.
