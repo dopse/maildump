@@ -22,10 +22,10 @@ public class SmtpServerLauncher {
 
 	private final static Logger log = LoggerFactory.getLogger(SmtpServerLauncher.class);
 
-	@Value("${smtpserver.hostName:localhost}")
+	@Value("${hostname:localhost}")
 	String hostName;
 
-	@Value("${smtpserver.port:25}")
+	@Value("${port:25}")
 	int port;
 
 	@Autowired
