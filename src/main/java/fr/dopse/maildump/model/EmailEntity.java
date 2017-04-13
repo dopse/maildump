@@ -11,7 +11,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * Created by fr27a86n on 11/04/2017.
@@ -34,15 +38,18 @@ public class EmailEntity implements Serializable {
 
 	@Embedded
 	@ElementCollection(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	private List<RecipientEntity> recipients;
 
 	@Embedded
 	@ElementCollection(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	private List<AttachmentEntity> attachments;
 
 	@Column(name = "SUBJECT")
 	private String subject;
 
+	@Lob
 	@Column(name = "CONTENT")
 	private String content;
 
