@@ -13,6 +13,8 @@ public interface IEmailService {
 
 	void addEmail(Email email);
 
+	void deleteEmail(Long id);
+
 	List<EmailEntity> findAllEmail();
 
 }

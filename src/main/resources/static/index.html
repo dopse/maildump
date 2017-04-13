@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Realtime Guestbook</title>
+    <title>Realtime Maildump</title>
 </head>
 <body>
 <h3>Messages:</h3>
@@ -17,14 +17,26 @@
         var messageList = $("#messages");
 
         var getMessageString = function (message) {
-            return "<li><p>Received: " + message.senderAddress + "</p><div>" + message.subject + "</div><div>" + message.content + "</div></li>";
+            return "<li id='" + message.id + "'><p>Received: " + message.senderAddress + "</p><div>" + message.subject + "</div><div>" + message.content + "</div><div class='delete' value='" + message.id + "'>supprimer</div></li>";
         };
 
         var socket = new SockJS('/maildump');
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, function () {
             // subscribe to the /topic/entries endpoint which feeds newly added messages
-            stompClient.subscribe('/email', function (data) {
+            stompClient.subscribe('/email/add', function (data) {
+                // when a message is received add it to the end of the list
+                var body = JSON.parse(data.body);
+                messageList.append(getMessageString(body));
+            });
+            // subscribe to the /topic/entries endpoint which feeds newly added messages
+            stompClient.subscribe('/email/delete', function (data) {
+                // when a message is received add it to the end of the list
+                var body = JSON.parse(data.body);
+                $('li#' + body).remove();
+            });
+            // subscribe to the /topic/entries endpoint which feeds newly added messages
+            stompClient.subscribe('/email/list', function (data) {
                 // when a message is received add it to the end of the list
                 var body = JSON.parse(data.body);
                 for (var i = 0; i < body.length; i++) {
@@ -32,6 +44,14 @@
                 }
             });
         });
+
+        $('body').on('click', '.delete', function () {
+            deleteEmail($(this).attr('value'));
+        });
+
+        function deleteEmail(id) {
+            stompClient.send("/deleteEmail", {}, id);
+        }
     });
 </script>
 </body>

@@ -1,6 +1,5 @@
 package fr.dopse.maildump.service.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import fr.dopse.maildump.converter.EmailConverter;
@@ -35,7 +34,12 @@ public class EmailServiceImpl implements IEmailService {
 		EmailEntity emailEntity = emailConverter.convert(email);
 
 		emailDAO.save(emailEntity);
-		simpMessagingTemplate.convertAndSend("/email", Collections.singletonList(emailEntity));
+		simpMessagingTemplate.convertAndSend("/email/add", emailEntity);
+	}
+
+	@Override
+	public void deleteEmail(Long id) {
+		emailDAO.delete(id);
 	}
 
 	@Override
