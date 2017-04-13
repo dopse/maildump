@@ -36,6 +36,10 @@ public class EmailEntity implements Serializable {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<RecipientEntity> recipients;
 
+	@Embedded
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<AttachmentEntity> attachments;
+
 	@Column(name = "SUBJECT")
 	private String subject;
 
@@ -72,6 +76,14 @@ public class EmailEntity implements Serializable {
 
 	public void setRecipients(List<RecipientEntity> recipients) {
 		this.recipients = recipients;
+	}
+
+	public List<AttachmentEntity> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(List<AttachmentEntity> attachments) {
+		this.attachments = attachments;
 	}
 
 	public String getSubject() {

@@ -17,12 +17,16 @@ public class EmailConverter implements Converter<Email, EmailEntity> {
 	@Autowired
 	private RecipientConverter recipientConverter;
 
+	@Autowired
+	private AttachmentConverter attachmentConverter;
+
 	@Override
 	public EmailEntity convert(Email email) {
 		EmailEntity emailEntity = new EmailEntity();
 		emailEntity.setSenderName(email.getFromRecipient().getName());
 		emailEntity.setSenderAddress(email.getFromRecipient().getAddress());
 		emailEntity.setRecipients(recipientConverter.convertList(email.getRecipients()));
+		emailEntity.setAttachments(attachmentConverter.convertList(email.getAttachments()));
 		emailEntity.setSubject(email.getSubject());
 		emailEntity.setContent(email.getTextHTML());
 

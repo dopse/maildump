@@ -52,7 +52,7 @@ public class EmailListener implements SimpleMessageListener {
 			MimeMessage message = new MimeMessage(getSession(), data);
 			email = EmailConverter.mimeMessageToEmail(message);
 		} catch (MessagingException e) {
-			log.error("Impossible de convertir en MimeMessage");
+			log.error("Unable to convert in MimeMessage");
 		}
 
 		return email;
