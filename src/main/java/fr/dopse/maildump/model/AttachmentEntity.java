@@ -18,7 +18,10 @@ public class AttachmentEntity implements Serializable {
 
 	@Lob
 	@Column(name = "DATA")
-	private String data;
+	private byte[] data;
+
+	@Column(name = "CONTENT_TYPE")
+    private String contentType;
 
 	public String getName() {
 		return name;
@@ -28,11 +31,19 @@ public class AttachmentEntity implements Serializable {
 		this.name = name;
 	}
 
-	public String getData() {
-		return data;
-	}
+    public byte[] getData() {
+        return data;
+    }
 
-	public void setData(String data) {
-		this.data = data;
-	}
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import fr.dopse.maildump.model.AttachmentEntity;
 
+import org.apache.commons.io.IOUtils;
 import org.simplejavamail.email.AttachmentResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +26,9 @@ public class AttachmentConverter implements Converter<AttachmentResource, Attach
 	public AttachmentEntity convert(AttachmentResource attachment) {
 		AttachmentEntity attachmentEntity = new AttachmentEntity();
 		attachmentEntity.setName(attachment.getName());
+		attachmentEntity.setContentType(attachment.getDataSource().getContentType());
 		try {
-			attachmentEntity.setData(attachment.readAllData());
+			attachmentEntity.setData(IOUtils.toByteArray(attachment.getDataSource().getInputStream()));
 		} catch (IOException e) {
 			log.error("Unable to read content of attachment");
 		}
