@@ -1,13 +1,7 @@
 package fr.dopse.maildump.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
 
 /**
  * Created by fr27a86n on 13/04/2017.
@@ -17,43 +11,23 @@ import javax.persistence.Table;
 @Table(name = "ATTACHMENT")
 public class AttachmentEntity implements Serializable {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "ID")
-	private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-	@Column(name = "NAME")
-	private String name;
-
-	@Lob
-	@Column(name = "DATA")
-	private byte[] data;
-
-	@Column(name = "CONTENT_TYPE")
     private String contentType;
 
-	public Long getId() {
-		return id;
-	}
+    private String name;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private AttachmentContentEntity attachmentContent;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-    public byte[] getData() {
-        return data;
+    public Long getId() {
+        return id;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getContentType() {
@@ -62,5 +36,22 @@ public class AttachmentEntity implements Serializable {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public AttachmentContentEntity getAttachmentContent() {
+        return attachmentContent;
+    }
+
+    public void setAttachmentContent(AttachmentContentEntity attachmentContent) {
+        this.attachmentContent = attachmentContent;
     }
 }

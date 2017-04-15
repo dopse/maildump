@@ -32,9 +32,10 @@ public class EmailServiceImpl implements IEmailService {
 	public void addEmail(Email email) {
 
 		EmailEntity emailEntity = emailConverter.convert(email);
+        emailDAO.save(emailEntity);
 
-		emailDAO.save(emailEntity);
-		simpMessagingTemplate.convertAndSend("/email/add", emailEntity);
+		simpMessagingTemplate.convertAndSend("/email/add",
+                emailDAO.findOne(emailEntity.getId()));
 	}
 
 	@Override

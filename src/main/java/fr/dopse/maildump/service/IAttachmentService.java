@@ -7,6 +7,6 @@ import fr.dopse.maildump.model.AttachmentEntity;
  */
 public interface IAttachmentService {
 
-	AttachmentEntity findAttachmentById(Long id);
+    AttachmentEntity findAttachmentById(Long id);
 
 }

@@ -2,7 +2,6 @@ package fr.dopse.maildump.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -18,11 +17,11 @@ public class RecipientEntity implements Serializable {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "EMAIL")
 	private String email;
+
+    private String nom;
 
 	public Long getId() {
 		return id;
@@ -39,4 +38,32 @@ public class RecipientEntity implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RecipientEntity that = (RecipientEntity) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        return nom != null ? nom.equals(that.nom) : that.nom == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (nom != null ? nom.hashCode() : 0);
+        return result;
+    }
 }

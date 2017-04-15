@@ -20,11 +20,12 @@ public class RecipientConverter implements Converter<Recipient, RecipientEntity>
 	public RecipientEntity convert(Recipient recipient) {
 		RecipientEntity recipientEntity = new RecipientEntity();
 		recipientEntity.setEmail(recipient.getAddress());
+		recipientEntity.setNom(recipient.getName());
 
 		return recipientEntity;
 	}
 
-	List<RecipientEntity> convertList(List<Recipient> recipients) {
+    List<RecipientEntity> convertList(List<Recipient> recipients) {
 		List<RecipientEntity> recipientEntityList = new ArrayList<>();
 		for (Recipient recipient : recipients) {
 			recipientEntityList.add(convert(recipient));

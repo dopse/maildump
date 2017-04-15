@@ -62,10 +62,11 @@ public class EmailController {
 				OutputStream out = new BufferedOutputStream(stream);
 
 				response.resetBuffer();
-				response.setBufferSize(attachment.getData().length);
-				response.setHeader("Content-Length", String.valueOf(attachment.getData().length));
+				response.setBufferSize(attachment.getAttachmentContent().getData().length);
+				response.setHeader("Content-Length", String.valueOf(attachment.
+                        getAttachmentContent().getData().length));
 
-				out.write(attachment.getData());
+				out.write(attachment.getAttachmentContent().getData());
 
 				out.close();
 				stream.close();

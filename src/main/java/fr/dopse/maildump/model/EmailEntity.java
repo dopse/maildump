@@ -1,13 +1,13 @@
 package fr.dopse.maildump.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 /**
  * Created by fr27a86n on 11/04/2017.
@@ -19,32 +19,26 @@ public class EmailEntity implements Serializable {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "SENDER_NAME")
 	private String senderName;
 
-	@Column(name = "SENDER_ADDRESS")
 	private String senderAddress;
 
 	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-	@Fetch(FetchMode.SELECT)
+    @Fetch(FetchMode.SELECT)
 	private List<RecipientEntity> recipients;
 
 	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-	@Fetch(FetchMode.SELECT)
+    @Fetch(FetchMode.SELECT)
 	private List<AttachmentEntity> attachments;
 
-	@Column(name = "SUBJECT")
 	private String subject;
 
 	@Lob
-	@Column(name = "CONTENT")
 	private String content;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DATE")
     private Date date;
 
 	public Long getId() {
@@ -71,23 +65,23 @@ public class EmailEntity implements Serializable {
 		this.senderAddress = senderAddress;
 	}
 
-	public List<RecipientEntity> getRecipients() {
-		return recipients;
-	}
+    public List<RecipientEntity> getRecipients() {
+        return recipients;
+    }
 
-	public void setRecipients(List<RecipientEntity> recipients) {
-		this.recipients = recipients;
-	}
+    public void setRecipients(List<RecipientEntity> recipients) {
+        this.recipients = recipients;
+    }
 
-	public List<AttachmentEntity> getAttachments() {
-		return attachments;
-	}
+    public List<AttachmentEntity> getAttachments() {
+        return attachments;
+    }
 
-	public void setAttachments(List<AttachmentEntity> attachments) {
-		this.attachments = attachments;
-	}
+    public void setAttachments(List<AttachmentEntity> attachments) {
+        this.attachments = attachments;
+    }
 
-	public String getSubject() {
+    public String getSubject() {
 		return subject;
 	}
 

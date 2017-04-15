@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.dopse.maildump.model.AttachmentContentEntity;
 import fr.dopse.maildump.model.AttachmentEntity;
 
 import org.apache.commons.io.IOUtils;
@@ -25,19 +26,22 @@ public class AttachmentConverter implements Converter<AttachmentResource, Attach
 	@Override
 	public AttachmentEntity convert(AttachmentResource attachment) {
 		AttachmentEntity attachmentEntity = new AttachmentEntity();
-		attachmentEntity.setName(attachment.getName());
-		attachmentEntity.setContentType(attachment.getDataSource().getContentType());
-		try {
-			attachmentEntity.setData(IOUtils.toByteArray(attachment.getDataSource().getInputStream()));
-		} catch (IOException e) {
-			log.error("Unable to read content of attachment");
-		}
+        attachmentEntity.setName(attachment.getName());
+        attachmentEntity.setContentType(attachment.getDataSource().getContentType());
+        try {
+            AttachmentContentEntity attachmentContentEntity = new AttachmentContentEntity();
+            attachmentContentEntity.setData(IOUtils.toByteArray(attachment.getDataSource().getInputStream()));
+            attachmentEntity.setAttachmentContent(attachmentContentEntity);
+        } catch (IOException e) {
+            log.error("Unable to read content of attachment");
+        }
 
-		return attachmentEntity;
+
+        return attachmentEntity;
 	}
 
-	List<AttachmentEntity> convertList(List<AttachmentResource> attachments) {
-		List<AttachmentEntity> attachmentEntityList = new ArrayList<>();
+    List<AttachmentEntity> convertList(List<AttachmentResource> attachments) {
+        List<AttachmentEntity> attachmentEntityList = new ArrayList<>();
 		for (AttachmentResource attachment : attachments) {
 			attachmentEntityList.add(convert(attachment));
 		}
