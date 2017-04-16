@@ -11,10 +11,11 @@ import org.simplejavamail.email.Email;
  */
 public interface IEmailService {
 
-	void addEmail(Email email);
+	EmailEntity addEmail(Email email);
 
 	void deleteEmail(Long id);
 
 	List<EmailEntity> findAllEmail();
 
+    EmailEntity findEmailById(Long id);
 }

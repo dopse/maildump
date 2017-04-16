@@ -3,14 +3,12 @@ package fr.dopse.maildump;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import fr.dopse.maildump.handler.MyMessageHandlerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.subethamail.smtp.helper.SimpleMessageListener;
-import org.subethamail.smtp.helper.SimpleMessageListenerAdapter;
 import org.subethamail.smtp.server.SMTPServer;
 
 /**
@@ -28,15 +26,14 @@ public class SmtpServerLauncher {
 	@Value("${port:25}")
 	int port;
 
-	@Autowired
-	@Qualifier(value = "emailListener")
-	private SimpleMessageListener simpleMessageListener;
+    @Autowired
+    private MyMessageHandlerFactory myMessageHandlerFactory;
 
 	private SMTPServer smtpServer;
 
 	@PostConstruct
 	public void start() {
-		smtpServer = new SMTPServer(new SimpleMessageListenerAdapter(simpleMessageListener));
+        smtpServer = new SMTPServer(myMessageHandlerFactory);
 		smtpServer.setPort(port);
 		smtpServer.setHostName(hostName);
 		smtpServer.start();

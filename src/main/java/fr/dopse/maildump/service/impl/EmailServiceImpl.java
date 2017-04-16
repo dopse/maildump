@@ -9,8 +9,8 @@ import fr.dopse.maildump.service.IEmailService;
 
 import org.simplejavamail.email.Email;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by fr27a86n on 11/04/2017.
@@ -25,26 +25,29 @@ public class EmailServiceImpl implements IEmailService {
 	@Autowired
 	private IEmailDAO emailDAO;
 
-	@Autowired
-	private SimpMessagingTemplate simpMessagingTemplate;
-
 	@Override
-	public void addEmail(Email email) {
+    @Transactional
+	public EmailEntity addEmail(Email email) {
 
 		EmailEntity emailEntity = emailConverter.convert(email);
-        emailDAO.save(emailEntity);
-
-		simpMessagingTemplate.convertAndSend("/email/add",
-                emailDAO.findOne(emailEntity.getId()));
+        return emailDAO.save(emailEntity);
 	}
 
 	@Override
+    @Transactional
 	public void deleteEmail(Long id) {
 		emailDAO.delete(id);
 	}
 
 	@Override
+    @Transactional(readOnly = true)
 	public List<EmailEntity> findAllEmail() {
 		return emailDAO.findAll();
 	}
+
+    @Override
+    @Transactional(readOnly = true)
+    public EmailEntity findEmailById(Long id) {
+        return emailDAO.findOne(id);
+    }
 }

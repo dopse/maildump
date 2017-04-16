@@ -6,6 +6,7 @@ import fr.dopse.maildump.service.IAttachmentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by fr27a86n on 11/04/2017.
@@ -18,6 +19,7 @@ public class AttachmentServiceImpl implements IAttachmentService {
 	private IAttachmentDAO attachmentDAO;
 
 	@Override
+    @Transactional(readOnly = true)
 	public AttachmentEntity findAttachmentById(Long id) {
 		return attachmentDAO.findOne(id);
 	}
