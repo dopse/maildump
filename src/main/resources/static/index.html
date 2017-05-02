@@ -1,61 +1,151 @@
 <!DOCTYPE html>
+
 <html>
-<head>
-    <title>Realtime Maildump</title>
-</head>
-<body>
-<h3>Messages:</h3>
-<ol id="messages"></ol>
-</div>
+    <head>
+        <title>MailDump</title>
 
-<script type="text/javascript" src="jquery.min.js"></script>
-<script type="text/javascript" src="sockjs.min.js"></script>
-<script type="text/javascript" src="stomp.min.js"></script>
+        <!-- Metadata -->
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        var messageList = $("#messages");
+        <meta charset="utf-8"/>
 
-        var getMessageString = function (message) {
-            return "<li id='" + message.id + "'><p>Received: " + message.senderAddress + "</p><div>" + message.subject + "</div>" +
-                "<div>" + message.content + "</div><div class='delete' value='" + message.id + "'>supprimer</div>" +
-                "<div><a href='/email/attachment/" + message.attachments[0].id +
-                "' target='_blank' >" + message.attachments[0].name + "</a></div></li>";
-        };
+        <!-- CSS -->
 
-        var socket = new SockJS('/maildump');
-        var stompClient = Stomp.over(socket);
-        stompClient.connect({}, function () {
-            // subscribe to the /topic/entries endpoint which feeds newly added messages
-            stompClient.subscribe('/email/add', function (data) {
-                // when a message is received add it to the end of the list
-                var body = JSON.parse(data.body);
-                messageList.append(getMessageString(body));
-            });
-            // subscribe to the /topic/entries endpoint which feeds newly added messages
-            stompClient.subscribe('/email/delete', function (data) {
-                // when a message is received add it to the end of the list
-                var body = JSON.parse(data.body);
-                $('li#' + body).remove();
-            });
-            // subscribe to the /topic/entries endpoint which feeds newly added messages
-            stompClient.subscribe('/email/list', function (data) {
-                // when a message is received add it to the end of the list
-                var body = JSON.parse(data.body);
-                for (var i = 0; i < body.length; i++) {
-                    messageList.append(getMessageString(body[i]));
-                }
-            });
-        });
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:200,400,700">
 
-        $('body').on('click', '.delete', function () {
-            deleteEmail($(this).attr('value'));
-        });
+        <!-- LESS -->
 
-        function deleteEmail(id) {
-            stompClient.send("/deleteEmail", {}, id);
-        }
-    });
-</script>
-</body>
+        <link rel="stylesheet/less" type="text/css" href="less/style.less">
+
+        <!-- Javascript -->
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <script src="js/index.js"></script>
+
+    </head>
+
+    <body ng-app="MainApp" ng-controller="MainController">
+        <main>
+			<div class="block padded greenBackground whiteText alignCenter">
+				MailDump
+			</div>
+
+			<div id="emailsList">
+
+				<div ng-show="emails.length">
+
+					<div ng-repeat="email in emails">
+
+						<!-- Default -->
+
+						<div ng-click="selectEmail(email)" ng-show="! isEmailSelected(email)" class="block summaryView pointer">
+							<table>
+								<tr>
+									<td>
+										{{email.name}}
+									</td>
+									<td class="separator">
+										<i class="fa fa-angle-right"></i>
+									</td>
+									<td>
+										<span ng-repeat="recipient in email.recipients">
+											{{recipient.name || recipient.email}}<span ng-if="! $last">, </span>
+										</span>
+									</td>
+									<td class="separator">
+										<i class="fa fa-angle-right"></i>
+									</td>
+									<td>
+										{{email.subject}}
+									</td>
+								</tr>
+							</table>
+						</div>
+
+						<!-- Active -->
+
+						<div ng-show="isEmailSelected(email)" class="block detailedView">
+							<div class="header">
+								<table>
+									<tr>
+										<td>
+											{{email.subject}}
+										</td>
+										<td class="alignRight">
+										<span ng-click="selectEmail(email)" class="pointer">
+											<i class="fa fa-times"></i>
+										</span>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="information">
+								<table>
+									<tr>
+										<td class="bold">
+											<i class="fa fa-fw fa-user"></i>
+											Sender
+										</td>
+										<td>
+											<ul class="chips">
+												<li tooltip="{{email.email}}">
+													{{email.name || email.email}}
+												</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td class="bold">
+											<i class="fa fa-fw fa-users"></i>
+											Recipients
+										</td>
+										<td>
+											<ul class="chips">
+												<li ng-repeat="recipient in email.recipients" tooltip="{{recipient.email}}">
+													{{recipient.name || recipient.email}}
+												</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td class="bold">
+											<i class="fa fa-fw fa-paperclip"></i>
+											Attachments
+										</td>
+										<td>
+											<ul class="chips">
+												<li ng-repeat="attachment in email.attachments" ng-click="openAttachment(attachment)" class="pointer">
+													{{attachment.name}}
+												</li>
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td class="bold">
+											<i class="fa fa-fw fa-font"></i>
+											Content
+										</td>
+										<td ng-bind-html="email.trustedContent"></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div ng-show="! emails.length">
+					<div class="smallPadded block">
+						No email received.
+					</div>
+				</div>
+
+			</div>
+
+        </main>
+    </body>
 </html>

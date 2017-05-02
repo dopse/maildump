@@ -1,0 +1,333 @@
+/* Variables */
+
+/** Generic **/
+
+@fontFamily: 'Roboto', sans-serif;
+@fontSize: 14px;
+@transitionDuration: 200ms;
+@tipContainerColor: @black;
+@largePadding: 35px;
+@padding: 20px;
+@smallPadding: 10px;
+@timeLineIconSize: 18px;
+@loaderIconSize: 80px;
+
+/** Colors **/
+
+@grey00125: #fcfcfc;
+@grey0025: #f9f9f9;
+@grey005: #f2f2f2;
+@grey0075: #ececec;
+@grey01: #e6e6e6;
+@grey0125: #dfdfdf;
+@grey015: #d9d9d9;
+@grey0175: #d2d2d2;
+@grey02: #cccccc;
+@grey0225: #c6c6c6;
+@grey025: #bfbfbf;
+@grey0275: #b9b9b9;
+@grey03: #b3b3b3;
+
+@white: #ffffff;
+@grey: #222222;
+@lightGrey: #999999;
+@veryLightGrey: #bbbbbb;
+@red: #ed5564;
+@orange: #fb6e52;
+@green: #48cfae;
+@green2: #22a3a9;
+@blue: #2e8bda;
+@purple: #a279c5;
+@yellow: #fed432;
+@lightBlack: #212429;
+@black: #000000;
+
+/* Styles */
+
+*
+{
+	padding: 0px;
+	margin: 0px;
+}
+
+body
+{
+	font-family: @fontFamily;
+	font-size: @fontSize;
+	color: @lightBlack;
+	background: @grey0025;
+
+	main
+	{
+		width: 100%;
+		max-width: 850px;
+		left: 50%;
+		margin: auto;
+		margin-top: @largePadding;
+
+
+
+		[tooltip]
+		{
+			position: relative;
+
+			&::before,
+			&::after
+			{
+				display: none;
+				display: block;
+				position: absolute;
+				left: 50%;
+				opacity: 0;
+				transform: translate(-50%, 0);
+				transition: all @transitionDuration;
+				user-select: none;
+				pointer-events: none;
+			}
+
+			&::before
+			{
+				bottom: calc(100%);
+				content: '';
+				border-left: 5px solid transparent;
+				border-right: 5px solid transparent;
+				border-top: 5px solid @lightBlack;
+				z-index: 1001;
+			}
+
+			&:after
+			{
+				bottom: calc(100% + 20px);
+				min-width: 50px;
+				max-width: 250px;
+				padding: @smallPadding;
+				content: attr(tooltip);
+				text-align: center;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				color: @white;
+				background: @lightBlack;
+				border-radius: 2px;
+				box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+				z-index: 1000;
+			}
+
+			&:hover
+			{
+				&::after,
+				&::before
+				{
+					display: block;
+					opacity: 1;
+				}
+			}
+		}
+
+		#emailsList
+		{
+			.summaryView
+			{
+				margin: @padding 0px @padding 0px;
+				padding: @smallPadding;
+
+				&:hover
+				{
+					color: @white;
+					background: @blue;
+				}
+
+				table
+				{
+					tr
+					{
+						td
+						{
+							&.separator
+							{
+								width: 20px;
+								color: @lightGrey;
+								text-align: center;
+							}
+						}
+					}
+				}
+			}
+
+			.detailedView
+			{
+				margin: @largePadding 0px @largePadding 0px;
+
+				table
+				{
+					width: 100%;
+					border-collapse: collapse;
+
+					tr
+					{
+						td
+						{
+							padding: @smallPadding;
+						}
+					}
+				}
+
+				.header
+				{
+					padding: @smallPadding;
+					color: @white;
+					background: @orange;
+				}
+
+				.information
+				{
+					tr
+					{
+						&:not(:last-child)
+						{
+							border-bottom: 1px solid @grey0125;
+						}
+
+						td:first-child
+						{
+							width: 110px;
+						}
+					}
+				}
+			}
+		}
+
+		.block
+		{
+			width: 100%;
+			box-sizing: border-box;
+			margin-bottom: @largePadding;
+			border-radius: 2px;
+			box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+			overflow: hidden;
+
+			&:hover
+			{
+				box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.15);
+			}
+		}
+
+		.chips
+		{
+			list-style: none;
+
+			li
+			{
+				float: left;
+				padding: 2.5px;
+				margin: 2.5px;
+				border-bottom: 1px dashed @lightBlack;
+
+				&:hover
+				{
+					border-bottom: 1px solid @lightBlack;
+				}
+			}
+		}
+
+		.largePadded
+		{
+			padding: @largePadding;
+		}
+
+		.padded
+		{
+			padding: @padding;
+		}
+
+		.smallPadded
+		{
+			padding: @smallPadding;
+		}
+	}
+
+	.bold
+	{
+		font-weight: 700;
+	}
+
+	.blueBackground
+	{
+		background: @blue;
+	}
+
+	.greenBackground
+	{
+		background: @green;
+	}
+
+	.orangeBackground
+	{
+		background: @orange;
+	}
+
+	.redBackground
+	{
+		background: @red;
+	}
+
+	.veryLightGreyBackground
+	{
+		background: @veryLightGrey;
+	}
+
+	.whiteText
+	{
+		color: @white;
+	}
+
+	.blueText
+	{
+		color: @blue;
+	}
+
+	.greenText
+	{
+		color: @green;
+	}
+
+	.orangeText
+	{
+		color: @orange;
+	}
+
+	.lightGreyText
+	{
+		color: @lightGrey;
+	}
+
+	.alignCenter
+	{
+		text-align: center;
+	}
+
+	.alignRight
+	{
+		text-align: right;
+	}
+
+	.alignLeft
+	{
+		text-align: left;
+	}
+
+	.alignJustify
+	{
+		text-align: justify;
+	}
+
+	.full
+	{
+		width: 100%;
+	}
+
+	.pointer
+	{
+		cursor: pointer;
+	}
+}
