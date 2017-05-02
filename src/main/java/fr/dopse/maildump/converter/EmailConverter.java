@@ -25,8 +25,8 @@ public class EmailConverter implements Converter<Email, EmailEntity> {
 	@Override
 	public EmailEntity convert(Email email) {
 		EmailEntity emailEntity = new EmailEntity();
-		emailEntity.setSenderName(email.getFromRecipient().getName());
-		emailEntity.setSenderAddress(email.getFromRecipient().getAddress());
+		emailEntity.setName(email.getFromRecipient().getName());
+		emailEntity.setEmail(email.getFromRecipient().getAddress());
 		emailEntity.setRecipients(recipientConverter.convertList(email.getRecipients()));
 		emailEntity.setAttachments(attachmentConverter.convertList(email.getAttachments()));
 		emailEntity.setSubject(email.getSubject());

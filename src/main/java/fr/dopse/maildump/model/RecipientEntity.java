@@ -21,7 +21,7 @@ public class RecipientEntity implements Serializable {
 
 	private String email;
 
-    private String nom;
+    private String name;
 
 	public Long getId() {
 		return id;
@@ -39,12 +39,12 @@ public class RecipientEntity implements Serializable {
 		this.email = email;
 	}
 
-    public String getNom() {
-        return nom;
+    public String getName() {
+        return name;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -56,14 +56,14 @@ public class RecipientEntity implements Serializable {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        return nom != null ? nom.equals(that.nom) : that.nom == null;
+        return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (nom != null ? nom.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 }

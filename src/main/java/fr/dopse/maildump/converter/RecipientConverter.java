@@ -20,7 +20,7 @@ public class RecipientConverter implements Converter<Recipient, RecipientEntity>
 	public RecipientEntity convert(Recipient recipient) {
 		RecipientEntity recipientEntity = new RecipientEntity();
 		recipientEntity.setEmail(recipient.getAddress());
-		recipientEntity.setNom(recipient.getName());
+		recipientEntity.setName(recipient.getName());
 
 		return recipientEntity;
 	}

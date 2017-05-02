@@ -21,9 +21,9 @@ public class EmailEntity implements Serializable {
 	@GeneratedValue
 	private Long id;
 
-	private String senderName;
+	private String name;
 
-	private String senderAddress;
+	private String email;
 
 	@OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
@@ -49,20 +49,20 @@ public class EmailEntity implements Serializable {
 		this.id = id;
 	}
 
-	public String getSenderName() {
-		return senderName;
+	public String getName() {
+		return name;
 	}
 
-	public void setSenderName(String senderName) {
-		this.senderName = senderName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getSenderAddress() {
-		return senderAddress;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setSenderAddress(String senderAddress) {
-		this.senderAddress = senderAddress;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
     public List<RecipientEntity> getRecipients() {
