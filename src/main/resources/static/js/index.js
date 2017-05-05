@@ -70,7 +70,7 @@ app.controller('MainController', function($rootScope, $scope, $window, $timeout,
 					$scope.emails = [];
 
 					angular.forEach(parseStompReturn(data), function(email) {
-						$scope.processEmail(email);
+						$scope.emails.push($scope.processEmail(email));
 					});
 				});
 			});
