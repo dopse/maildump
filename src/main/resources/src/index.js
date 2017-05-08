@@ -1,3 +1,11 @@
+/* Imports */
+
+import angular from 'angular';
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
+
+import './style.less';
+
 /* Application creation */
 
 var app = angular.module('MainApp', []);
